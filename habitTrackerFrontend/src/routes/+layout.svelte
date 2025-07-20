@@ -6,6 +6,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { writable } from 'svelte/store';
+	import { Toaster } from 'svelte-sonner';
 
   
 	// Track loading state while checking auth
@@ -33,5 +34,7 @@
 	  <p class="text-lg font-semibold text-gray-600">Loading...</p>
 	</div>
   {:else}
+		<!-- Usually in layout or App.svelte -->
+		<Toaster position="bottom-center" richColors/>
 	<slot />
   {/if}

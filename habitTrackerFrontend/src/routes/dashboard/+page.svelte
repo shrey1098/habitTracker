@@ -1,8 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
 	import { user } from '../../stores/user.js';
-	import { getHabits } from '$lib/api.js';
+	import { getHabits, checkHabit, logMood } from '$lib/api.js';
   import {goto} from '$app/navigation';
+	import { toast } from 'svelte-sonner';
 
 	// import components
 	import HabitCard from '../../components/HabitCard.svelte';
@@ -20,17 +21,17 @@
 	onMount(async () => {
 		try {
 			const data = await getHabits();
-			console.log('Habits loaded:', data);
+			//console.log('Habits loaded:', data);
 			habits = data || [];
 		} catch (err) {
-			console.error('Error loading habits:', err);
+			//console.error('Error loading habits:', err);
 		} finally {
 			loading = false;
 		}
 	});
 
 	const openDialog = () => {
-		console.log('Opening add habit dialog');
+		//console.log('Opening add habit dialog');
 		showAddHabitDialog = true;
 	};
 
@@ -39,8 +40,44 @@
 	 */
 	function handleAddHabitSubmit(event){
 		const {name, category} = event.detail;
-		console.log('New Habit:', name, category);
+		//console.log('New Habit:', name, category);
 		// Here you would typically call an API to save the new habit
+	}
+
+	async function handleCheckIn(habitId){
+
+		//console.log('Check In:', habitId);
+		try {
+			const result = await checkHabit(habitId);
+			console.log(result);
+			if (result && result.success) {
+				// re-fetch habits to display updated strek
+				const updated = await getHabits();
+				habits = updated || [];
+			}
+		} catch (err) {
+			if (err.message.includes("Habit already checked for today")) {
+				toast.error("⛔ You can only check in once per day.");
+			} else {
+				toast.error("❌ Something went wrong. Try again.");
+			}
+		}
+	}
+
+	async function handleLogMood(habitId, mood) {
+		try {
+			const result = await logMood(habitId, mood);
+			if (result.message === 'Reaction added successfully') {
+				toast.success("📝 Mood logged!");
+				const updated = await getHabits();
+				habits = updated || [];
+			} else {
+				toast.error("Failed to log mood.");
+			}
+		} catch (err) {
+			toast.error("❌ Something went wrong.");
+			console.error(err);
+		}
 	}
 </script>
 
@@ -77,7 +114,11 @@
 			</div>
 		{:else}
 			{#each habits as habit}
-				<HabitCard {habit} />
+				<HabitCard {habit}
+									 on:checkin={(e) => handleCheckIn(e.detail.id)}
+									 on:LogMood={(e) => handleLogMood(e.detail.id, e.detail.mood)
+				}
+				/>
 			{/each}
 		{/if}
 	</div>

@@ -73,5 +73,9 @@
 	},
 	"keywords": [
 		"svelte"
-	]
+	],
+	"dependencies": {
+		"sonner": "^2.0.6",
+		"svelte-sonner": "^1.0.5"
+	}
 }
