@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+.glass-card {
+    @apply p-4 rounded-xl bg-neutral-800 border border-orange-500 text-center shadow-lg text-white;
+    transition: transform 0.2s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-2px);
+    @apply border-orange-400;
+  }
+  

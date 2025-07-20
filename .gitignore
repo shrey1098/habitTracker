@@ -1,0 +1,53 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Node modules
+**/node_modules/
+
+# Logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# Runtime data
+**/pids
+**/*.pid
+**/*.seed
+**/*.pid.lock
+
+# OS-generated files
+*.swp
+*.swo
+
+# Env files
+**/.env
+**/.env.*     # handles .env.development, etc.
+
+# Build outputs
+**/dist/
+**/build/
+
+# Vite/Next/SvelteKit output
+**/.svelte-kit/
+**/.next/
+**/.vercel/
+
+# Test coverage
+**/coverage/
+**/.nyc_output/
+
+# Optional IDE files
+.vscode/
+.idea/
+*.code-workspace
+
+# SvelteKit specific
+**/.svelte-kit/
+**/.netlify/
+
+# Trash and temporary
+**/*~
+**/.Trash
+
